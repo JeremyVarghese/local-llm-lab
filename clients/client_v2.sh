@@ -12,7 +12,18 @@ MAX_RESPONSE_TOKENS=2048
 
 HIST_FILE="chat_history.md"
 touch "$HIST_FILE"
-#> "$HIST_FILE" # Clear file on startup
+
+# Ask for confirmation
+read -r -p "Clear previous chat conversation [y/N]: " confirmation
+
+# Check if input is y or Y
+if [[ "$confirmation" =~ ^[Yy]$ ]]; then
+    > "$HIST_FILE"
+    echo -e "${YELLOW}[System] History cleared.${RESET}"
+else
+    echo -e "${YELLOW}[System] Continuing with previous history.${RESET}"
+fi
+
 summarize_entire_history() {
     echo -e "${YELLOW}[System] [Compressing Memory...]${RESET}"
 
