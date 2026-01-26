@@ -87,7 +87,5 @@ while true; do
   printf "%s\n" "$RESPONSE" | glow
   echo
   printf " %s\n" "$RESPONSE" >> "$HIST_FILE"
-  # Check file size BEFORE asking user for input
-  # BLOCKING CALL: The script waits here until finished
   summarize_entire_history 
 done
