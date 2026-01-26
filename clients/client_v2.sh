@@ -3,7 +3,7 @@
 GREEN="\033[1;32m"   # bright green
 YELLOW="\033[1;33m"
 RESET="\033[0m"
-SERVER_URL="http://localhost:8080/v1/completions" # Ministral-3-8B-Instruct-2512-Q4_K_M
+SERVER_URL="http://localhost:8080/v1/chat/completions" # Ministral-3-8B-Instruct-2512-Q4_K_M
 SUMMARY_URL="http://localhost:8081/v1/chat/completions" # Llama-3.2-1B-Instruct-Q4_K_M
 CTX_LIMIT_CHARS=3000
 TRIM_CHARS=2500
@@ -11,8 +11,8 @@ MAX_SAFE_BYTES=12000
 MAX_RESPONSE_TOKENS=2048
 
 HIST_FILE="chat_history.md"
-#touch "$HIST_FILE"
-> "$HIST_FILE" # Clear file on startup
+touch "$HIST_FILE"
+#> "$HIST_FILE" # Clear file on startup
 summarize_entire_history() {
     echo -e "${YELLOW}[System] [Compressing Memory...]${RESET}"
 
@@ -57,16 +57,18 @@ while true; do
       --arg prompt "$(cat "$HIST_FILE")" \
         --argjson max_tokens "$MAX_RESPONSE_TOKENS" \
         '{
-          prompt: $prompt,
+          messages: [
+            { role: "user", content: $prompt }
+          ],
           max_tokens: $max_tokens,
           temperature: 0.7,
           top_p: 0.9,
           stream: true,
-          stop: ["User:", "\nUser:", "\\nUser:"] 
+          stop: ["User:", "\nUser:", "\\nUser:","<|im_end|>"] 
         }'
       )" | \
     sed -u '/^data: \[DONE\]/d; s/^data: //' | \
-    jq -j --unbuffered -r '.choices[0].text // empty' | \
+    jq -j --unbuffered -r '.choices[0].delta.content // empty' | \
     tee /dev/tty
   )
   echo 
