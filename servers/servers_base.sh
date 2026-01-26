@@ -77,3 +77,22 @@ gptoss(){
   --batch-size 64 \
   "$@"
 }
+
+ministral3() {
+   ~/llms/llama.cpp/build/bin/llama-cli \
+   -m ~/llms/models/Ministral-3-8B-Instruct-2512-Q4_K_M.gguf \
+   --ctx-size 16384 \
+   --threads 4 \
+   --batch-size 128 \
+   "$@" 
+}
+ministral3-server() {
+   ~/llms/llama.cpp/build/bin/llama-server \
+   -m ~/llms/models/Ministral-3-8B-Instruct-2512-Q4_K_M.gguf \
+   --ctx-size 16384 \
+   --threads 4 \
+   --batch-size 128 \
+   --host 0.0.0.0 \
+   "$@" 
+}
+
