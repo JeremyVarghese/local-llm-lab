@@ -7,7 +7,7 @@ Ministral3() {
     --threads 4 \
     --batch-size 128 \
     --host 0.0.0.0 \
-    --port 8080 \
+    --port 8080 
 }
 LLama3() {
   ~/llms/llama.cpp/build/bin/llama-server \
