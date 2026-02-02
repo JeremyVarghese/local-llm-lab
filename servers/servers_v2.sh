@@ -5,7 +5,7 @@ Ministral3() {
     -m ~/llms/models/Ministral-3-8B-Instruct-2512-Q4_K_M.gguf \
     --ctx-size 8192 \
     --threads 4 \
-    --batch-size 128 \
+    --batch-size 256 \
     --host 0.0.0.0 \
     --port 8080 
 }
